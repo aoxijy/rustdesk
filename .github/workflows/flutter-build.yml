@@ -168,6 +168,10 @@ jobs:
 
       - name: Build rustdesk
         run: |
+          # 强制修改底层 Rust 配置文件中的默认服务器和 Key
+          sed -i 's/"rs-ny.rustdesk.com"/"hd.gqru.com"/g' ./libs/hbb_common/src/config.rs
+          sed -i 's/"OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw="/"Ee25xS+3ev+CoDJURG3ImQSK0IrgTWFg7ODBt9vLecQ="/g' ./libs/hbb_common/src/config.rs
+          
           # Windows: build RustDesk
           python3 .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
           mv ./flutter/build/windows/x64/runner/Release ./rustdesk
