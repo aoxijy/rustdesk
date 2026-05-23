@@ -63,7 +63,6 @@ jobs:
               vcpkg-triplet: x64-windows-static,
             }
     env:
-      # 自定义服务器与密钥
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
@@ -1057,7 +1056,7 @@ jobs:
           files: |
             signed-apk/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
 
-  # ===================== Android Universal APK (只打包，不编译，无需注入) =====================
+  # ===================== Android Universal APK (只打包，无需注入) =====================
   build-rustdesk-android-universal:
     needs: [build-rustdesk-android]
     name: build rustdesk android universal apk
@@ -1370,11 +1369,11 @@ jobs:
           dockerRunArgs: |
             --volume "${PWD}:/workspace"
             --volume "/opt/artifacts:/opt/artifacts"
-          env: |
-            RENDEZVOUS_SERVERS=${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-            RELAY_SERVERS=${{ secrets.CUSTOM_RELAY_SERVERS }}
-            API_SERVER=${{ secrets.CUSTOM_API_SERVER }}
-            KEY=${{ secrets.CUSTOM_KEY }}
+          env:
+            RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+            RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+            API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+            KEY: ${{ secrets.CUSTOM_KEY }}
           shell: /bin/bash
           install: |
             apt-get update -y
@@ -1639,11 +1638,11 @@ jobs:
             ls -l "${PWD}"
           dockerRunArgs: |
             --volume "${PWD}:/workspace"
-          env: |
-            RENDEZVOUS_SERVERS=${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-            RELAY_SERVERS=${{ secrets.CUSTOM_RELAY_SERVERS }}
-            API_SERVER=${{ secrets.CUSTOM_API_SERVER }}
-            KEY=${{ secrets.CUSTOM_KEY }}
+          env:
+            RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+            RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+            API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+            KEY: ${{ secrets.CUSTOM_KEY }}
           shell: /bin/bash
           install: |
             apt-get update
