@@ -154,11 +154,25 @@ jobs:
       - name: Patch default servers and key
         shell: bash
         run: |
-          echo "Patching hbb_common/src/config.rs..."
-          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
-          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
-          echo "Patching src/common.rs default API server..."
-          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+          python3 -c "
+          import os, re
+          rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+          key = os.environ['CUSTOM_KEY']
+          api = os.environ['CUSTOM_API_SERVER']
+          with open('hbb_common/src/config.rs', 'r') as f:
+              content = f.read()
+          content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                           f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+          content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                           f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+          with open('hbb_common/src/config.rs', 'w') as f:
+              f.write(content)
+          with open('src/common.rs', 'r') as f:
+              content = f.read()
+          content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+          with open('src/common.rs', 'w') as f:
+              f.write(content)
+          "
 
       - name: Build rustdesk
         run: |
@@ -348,11 +362,25 @@ jobs:
       - name: Patch default servers and key
         shell: bash
         run: |
-          echo "Patching hbb_common/src/config.rs..."
-          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
-          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
-          echo "Patching src/common.rs default API server..."
-          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+          python3 -c "
+          import os, re
+          rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+          key = os.environ['CUSTOM_KEY']
+          api = os.environ['CUSTOM_API_SERVER']
+          with open('hbb_common/src/config.rs', 'r') as f:
+              content = f.read()
+          content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                           f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+          content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                           f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+          with open('hbb_common/src/config.rs', 'w') as f:
+              f.write(content)
+          with open('src/common.rs', 'r') as f:
+              content = f.read()
+          content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+          with open('src/common.rs', 'w') as f:
+              f.write(content)
+          "
 
       - name: Build rustdesk
         id: build
@@ -518,11 +546,25 @@ jobs:
       - name: Patch default servers and key
         shell: bash
         run: |
-          echo "Patching hbb_common/src/config.rs..."
-          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
-          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
-          echo "Patching src/common.rs default API server..."
-          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+          python3 -c "
+          import os, re
+          rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+          key = os.environ['CUSTOM_KEY']
+          api = os.environ['CUSTOM_API_SERVER']
+          with open('hbb_common/src/config.rs', 'r') as f:
+              content = f.read()
+          content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                           f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+          content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                           f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+          with open('hbb_common/src/config.rs', 'w') as f:
+              f.write(content)
+          with open('src/common.rs', 'r') as f:
+              content = f.read()
+          content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+          with open('src/common.rs', 'w') as f:
+              f.write(content)
+          "
 
       - name: Build rustdesk lib
         run: |
@@ -701,11 +743,25 @@ jobs:
       - name: Patch default servers and key
         shell: bash
         run: |
-          echo "Patching hbb_common/src/config.rs..."
-          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
-          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
-          echo "Patching src/common.rs default API server..."
-          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+          python3 -c "
+          import os, re
+          rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+          key = os.environ['CUSTOM_KEY']
+          api = os.environ['CUSTOM_API_SERVER']
+          with open('hbb_common/src/config.rs', 'r') as f:
+              content = f.read()
+          content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                           f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+          content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                           f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+          with open('hbb_common/src/config.rs', 'w') as f:
+              f.write(content)
+          with open('src/common.rs', 'r') as f:
+              content = f.read()
+          content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+          with open('src/common.rs', 'w') as f:
+              f.write(content)
+          "
 
       - name: Build rustdesk
         run: |
@@ -968,11 +1024,25 @@ jobs:
       - name: Patch default servers and key
         shell: bash
         run: |
-          echo "Patching hbb_common/src/config.rs..."
-          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
-          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
-          echo "Patching src/common.rs default API server..."
-          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+          python3 -c "
+          import os, re
+          rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+          key = os.environ['CUSTOM_KEY']
+          api = os.environ['CUSTOM_API_SERVER']
+          with open('hbb_common/src/config.rs', 'r') as f:
+              content = f.read()
+          content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                           f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+          content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                           f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+          with open('hbb_common/src/config.rs', 'w') as f:
+              f.write(content)
+          with open('src/common.rs', 'r') as f:
+              content = f.read()
+          content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+          with open('src/common.rs', 'w') as f:
+              f.write(content)
+          "
 
       - name: Build rustdesk lib
         env:
@@ -1461,11 +1531,26 @@ jobs:
             export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
             export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
 
-            echo "Patching hbb_common/src/config.rs..."
-            sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" /workspace/hbb_common/src/config.rs
-            sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" /workspace/hbb_common/src/config.rs
-            echo "Patching src/common.rs default API server..."
-            sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" /workspace/src/common.rs
+            # 使用 Python 修补源码
+            python3 -c "
+            import os, re
+            rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+            key = os.environ['CUSTOM_KEY']
+            api = os.environ['CUSTOM_API_SERVER']
+            with open('/workspace/hbb_common/src/config.rs', 'r') as f:
+                content = f.read()
+            content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                             f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+            content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                             f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+            with open('/workspace/hbb_common/src/config.rs', 'w') as f:
+                f.write(content)
+            with open('/workspace/src/common.rs', 'r') as f:
+                content = f.read()
+            content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+            with open('/workspace/src/common.rs', 'w') as f:
+                f.write(content)
+            "
 
             git config --global --add safe.directory "*"
             pushd /opt
@@ -1771,11 +1856,26 @@ jobs:
             export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
             export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
 
-            echo "Patching hbb_common/src/config.rs..."
-            sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" /workspace/hbb_common/src/config.rs
-            sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" /workspace/hbb_common/src/config.rs
-            echo "Patching src/common.rs default API server..."
-            sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" /workspace/src/common.rs
+            # 使用 Python 修补源码
+            python3 -c "
+            import os, re
+            rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
+            key = os.environ['CUSTOM_KEY']
+            api = os.environ['CUSTOM_API_SERVER']
+            with open('/workspace/hbb_common/src/config.rs', 'r') as f:
+                content = f.read()
+            content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
+                             f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
+            content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
+                             f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
+            with open('/workspace/hbb_common/src/config.rs', 'w') as f:
+                f.write(content)
+            with open('/workspace/src/common.rs', 'r') as f:
+                content = f.read()
+            content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
+            with open('/workspace/src/common.rs', 'w') as f:
+                f.write(content)
+            "
 
             git config --global --add safe.directory "*"
             update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
