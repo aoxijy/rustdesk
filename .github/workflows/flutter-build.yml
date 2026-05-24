@@ -1371,6 +1371,9 @@ jobs:
             --volume "/opt/artifacts:/opt/artifacts"
           shell: /bin/bash
           install: |
+            # 配置 git 凭证，避免克隆公共仓库时要求认证
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
+
             apt-get update -y
             echo -e "installing deps"
             apt-get install -y \
@@ -1410,6 +1413,9 @@ jobs:
             ls -l ./
             tree -L 3 /opt/artifacts/vcpkg/installed
           run: |
+            # 再次确保 git 凭证已配置
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
+
             # 注入自定义服务器配置
             export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export RELAY_SERVERS="${{ secrets.CUSTOM_RELAY_SERVERS }}"
@@ -1641,6 +1647,9 @@ jobs:
             --volume "${PWD}:/workspace"
           shell: /bin/bash
           install: |
+            # 配置 git 凭证，避免克隆公共仓库时要求认证
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
+
             apt-get update
             apt-get install -y \
                build-essential \
@@ -1713,6 +1722,9 @@ jobs:
             dpkg -i nasm.deb
             rm -f nasm.deb
           run: |
+            # 再次确保 git 凭证已配置
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
+
             # 注入自定义服务器配置
             export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export RELAY_SERVERS="${{ secrets.CUSTOM_RELAY_SERVERS }}"
