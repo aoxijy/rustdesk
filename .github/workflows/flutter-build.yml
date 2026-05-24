@@ -1526,29 +1526,29 @@ jobs:
             ls -l ./
             tree -L 3 /opt/artifacts/vcpkg/installed
           run: |
-            # 注入自定义服务器配置
+            cd /workspace
             export CUSTOM_RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
             export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
 
-            # 使用 Python 修补源码
+            # 使用 Python 修补源码（当前目录已为 /workspace）
             python3 -c "
             import os, re
             rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
             key = os.environ['CUSTOM_KEY']
             api = os.environ['CUSTOM_API_SERVER']
-            with open('/workspace/hbb_common/src/config.rs', 'r') as f:
+            with open('hbb_common/src/config.rs', 'r') as f:
                 content = f.read()
             content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
                              f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
             content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
                              f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
-            with open('/workspace/hbb_common/src/config.rs', 'w') as f:
+            with open('hbb_common/src/config.rs', 'w') as f:
                 f.write(content)
-            with open('/workspace/src/common.rs', 'r') as f:
+            with open('src/common.rs', 'r') as f:
                 content = f.read()
             content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
-            with open('/workspace/src/common.rs', 'w') as f:
+            with open('src/common.rs', 'w') as f:
                 f.write(content)
             "
 
@@ -1851,29 +1851,29 @@ jobs:
             dpkg -i nasm.deb
             rm -f nasm.deb
           run: |
-            # 注入自定义服务器配置
+            cd /workspace
             export CUSTOM_RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
             export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
 
-            # 使用 Python 修补源码
+            # 使用 Python 修补源码（当前目录已为 /workspace）
             python3 -c "
             import os, re
             rendezvous = os.environ['CUSTOM_RENDEZVOUS_SERVERS']
             key = os.environ['CUSTOM_KEY']
             api = os.environ['CUSTOM_API_SERVER']
-            with open('/workspace/hbb_common/src/config.rs', 'r') as f:
+            with open('hbb_common/src/config.rs', 'r') as f:
                 content = f.read()
             content = re.sub(r'pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*?\];',
                              f'pub const RENDEZVOUS_SERVERS: &[&str] = &[\"{rendezvous}\"];', content)
             content = re.sub(r'pub const RS_PUB_KEY: &str = \".*?\";',
                              f'pub const RS_PUB_KEY: &str = \"{key}\";', content)
-            with open('/workspace/hbb_common/src/config.rs', 'w') as f:
+            with open('hbb_common/src/config.rs', 'w') as f:
                 f.write(content)
-            with open('/workspace/src/common.rs', 'r') as f:
+            with open('src/common.rs', 'r') as f:
                 content = f.read()
             content = content.replace('\"https://admin.rustdesk.com\"', f'\"{api}\"')
-            with open('/workspace/src/common.rs', 'w') as f:
+            with open('src/common.rs', 'w') as f:
                 f.write(content)
             "
 
