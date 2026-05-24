@@ -63,11 +63,10 @@ jobs:
               vcpkg-triplet: x64-windows-static,
             }
     env:
-      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
-      API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
-      KEY: ${{ secrets.CUSTOM_KEY }}
+      CUSTOM_RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+      CUSTOM_RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      CUSTOM_API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+      CUSTOM_KEY: ${{ secrets.CUSTOM_KEY }}
 
     steps:
       - name: Export GitHub Actions cache environment variables
@@ -151,6 +150,15 @@ jobs:
           fi
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
+
+      - name: Patch default servers and key
+        shell: bash
+        run: |
+          echo "Patching hbb_common/src/config.rs..."
+          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
+          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
+          echo "Patching src/common.rs default API server..."
+          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
 
       - name: Build rustdesk
         run: |
@@ -276,11 +284,10 @@ jobs:
               vcpkg-triplet: x86-windows-static,
             }
     env:
-      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
-      API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
-      KEY: ${{ secrets.CUSTOM_KEY }}
+      CUSTOM_RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+      CUSTOM_RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      CUSTOM_API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+      CUSTOM_KEY: ${{ secrets.CUSTOM_KEY }}
 
     steps:
       - name: Export GitHub Actions cache environment variables
@@ -337,6 +344,15 @@ jobs:
           fi
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-${{ matrix.job.vcpkg-triplet }}-rel-out.log" || true
         shell: bash
+
+      - name: Patch default servers and key
+        shell: bash
+        run: |
+          echo "Patching hbb_common/src/config.rs..."
+          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
+          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
+          echo "Patching src/common.rs default API server..."
+          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
 
       - name: Build rustdesk
         id: build
@@ -425,11 +441,10 @@ jobs:
               vcpkg-triplet: arm64-ios,
             }
     env:
-      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
-      API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
-      KEY: ${{ secrets.CUSTOM_KEY }}
+      CUSTOM_RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+      CUSTOM_RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      CUSTOM_API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+      CUSTOM_KEY: ${{ secrets.CUSTOM_KEY }}
 
     steps:
       - name: Export GitHub Actions cache environment variables
@@ -500,6 +515,15 @@ jobs:
           name: bridge-artifact
           path: ./
 
+      - name: Patch default servers and key
+        shell: bash
+        run: |
+          echo "Patching hbb_common/src/config.rs..."
+          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
+          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
+          echo "Patching src/common.rs default API server..."
+          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+
       - name: Build rustdesk lib
         run: |
           rustup target add ${{ matrix.job.target }}
@@ -541,11 +565,10 @@ jobs:
               vcpkg-triplet: arm64-osx,
             }
     env:
-      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
-      API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
-      KEY: ${{ secrets.CUSTOM_KEY }}
+      CUSTOM_RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+      CUSTOM_RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      CUSTOM_API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+      CUSTOM_KEY: ${{ secrets.CUSTOM_KEY }}
 
     steps:
       - name: Export GitHub Actions cache environment variables
@@ -675,6 +698,15 @@ jobs:
           cargo -V
           rustc -V
 
+      - name: Patch default servers and key
+        shell: bash
+        run: |
+          echo "Patching hbb_common/src/config.rs..."
+          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
+          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
+          echo "Patching src/common.rs default API server..."
+          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+
       - name: Build rustdesk
         run: |
           if [ "${{ matrix.job.target }}" = "aarch64-apple-darwin" ]; then
@@ -800,11 +832,10 @@ jobs:
               suffix: "",
             }
     env:
-      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
-      API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
-      KEY: ${{ secrets.CUSTOM_KEY }}
+      CUSTOM_RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
+      CUSTOM_RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      CUSTOM_API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
+      CUSTOM_KEY: ${{ secrets.CUSTOM_KEY }}
 
     steps:
       - name: Free Disk Space (Ubuntu)
@@ -934,6 +965,15 @@ jobs:
           prefix-key: rustdesk-lib-cache-android
           key: ${{ matrix.job.target }}
 
+      - name: Patch default servers and key
+        shell: bash
+        run: |
+          echo "Patching hbb_common/src/config.rs..."
+          sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" hbb_common/src/config.rs
+          sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" hbb_common/src/config.rs
+          echo "Patching src/common.rs default API server..."
+          sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" src/common.rs
+
       - name: Build rustdesk lib
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
@@ -1061,7 +1101,7 @@ jobs:
           files: |
             signed-apk/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.apk
 
-  # ===================== Android Universal APK (只打包，无需注入) =====================
+  # ===================== Android Universal APK (只打包) =====================
   build-rustdesk-android-universal:
     needs: [build-rustdesk-android]
     name: build rustdesk android universal apk
@@ -1376,11 +1416,7 @@ jobs:
             --volume "/opt/artifacts:/opt/artifacts"
           shell: /bin/bash
           install: |
-            # 配置 git 凭证，避免克隆公共仓库时要求认证
-            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
-
             apt-get update -y
-            echo -e "installing deps"
             apt-get install -y \
                build-essential \
                clang \
@@ -1415,18 +1451,21 @@ jobs:
                xz-utils \
                libssl-dev
             apt-get remove -y libopus-dev || true
+            # 配置 git 凭证
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
             ls -l ./
             tree -L 3 /opt/artifacts/vcpkg/installed
           run: |
-            # 再次确保 git 凭证已配置
-            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
-
             # 注入自定义服务器配置
-            export RENDEZVOUS_SERVER="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RELAY_SERVER="${{ secrets.CUSTOM_RELAY_SERVERS }}"
-            export API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
-            export KEY="${{ secrets.CUSTOM_KEY }}"
+            export CUSTOM_RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
+            export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
+            export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
+
+            echo "Patching hbb_common/src/config.rs..."
+            sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" /workspace/hbb_common/src/config.rs
+            sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" /workspace/hbb_common/src/config.rs
+            echo "Patching src/common.rs default API server..."
+            sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" /workspace/src/common.rs
 
             git config --global --add safe.directory "*"
             pushd /opt
@@ -1653,9 +1692,6 @@ jobs:
             --volume "${PWD}:/workspace"
           shell: /bin/bash
           install: |
-            # 配置 git 凭证，避免克隆公共仓库时要求认证
-            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
-
             apt-get update
             apt-get install -y \
                build-essential \
@@ -1691,6 +1727,8 @@ jobs:
                xz-utils \
                zip \
                libssl-dev
+            # 配置 git 凭证
+            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
             if [ "${{ matrix.job.vcpkg-triplet }}" = "arm-linux" ]; then
               apt-get install -y gcc-8 g++-8
               git clone --depth 1 https://github.com/kitware/cmake -b "v${{ env.SCITER_ARMV7_CMAKE_VERSION }}" /tmp/cmake
@@ -1728,15 +1766,16 @@ jobs:
             dpkg -i nasm.deb
             rm -f nasm.deb
           run: |
-            # 再次确保 git 凭证已配置
-            git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
-
             # 注入自定义服务器配置
-            export RENDEZVOUS_SERVER="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RELAY_SERVER="${{ secrets.CUSTOM_RELAY_SERVERS }}"
-            export API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
-            export KEY="${{ secrets.CUSTOM_KEY }}"
+            export CUSTOM_RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
+            export CUSTOM_KEY="${{ secrets.CUSTOM_KEY }}"
+            export CUSTOM_API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
+
+            echo "Patching hbb_common/src/config.rs..."
+            sed -i "s|pub const RENDEZVOUS_SERVERS: &\[&str\] = &\[.*\];|pub const RENDEZVOUS_SERVERS: \&[\&str] = \&[\"${CUSTOM_RENDEZVOUS_SERVERS}\"];|" /workspace/hbb_common/src/config.rs
+            sed -i "s|pub const RS_PUB_KEY: &str = \".*\";|pub const RS_PUB_KEY: \&str = \"${CUSTOM_KEY}\";|" /workspace/hbb_common/src/config.rs
+            echo "Patching src/common.rs default API server..."
+            sed -i "s|\"https://admin.rustdesk.com\"|\"${CUSTOM_API_SERVER}\"|g" /workspace/src/common.rs
 
             git config --global --add safe.directory "*"
             update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
