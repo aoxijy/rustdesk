@@ -63,8 +63,9 @@ jobs:
               vcpkg-triplet: x64-windows-static,
             }
     env:
+      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
       KEY: ${{ secrets.CUSTOM_KEY }}
 
@@ -275,8 +276,9 @@ jobs:
               vcpkg-triplet: x86-windows-static,
             }
     env:
+      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
       KEY: ${{ secrets.CUSTOM_KEY }}
 
@@ -423,8 +425,9 @@ jobs:
               vcpkg-triplet: arm64-ios,
             }
     env:
+      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
       KEY: ${{ secrets.CUSTOM_KEY }}
 
@@ -538,8 +541,9 @@ jobs:
               vcpkg-triplet: arm64-osx,
             }
     env:
+      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
       KEY: ${{ secrets.CUSTOM_KEY }}
 
@@ -796,8 +800,9 @@ jobs:
               suffix: "",
             }
     env:
+      RENDEZVOUS_SERVER: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
       RENDEZVOUS_SERVERS: ${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}
-      RELAY_SERVERS: ${{ secrets.CUSTOM_RELAY_SERVERS }}
+      RELAY_SERVER: ${{ secrets.CUSTOM_RELAY_SERVERS }}
       API_SERVER: ${{ secrets.CUSTOM_API_SERVER }}
       KEY: ${{ secrets.CUSTOM_KEY }}
 
@@ -1417,8 +1422,9 @@ jobs:
             git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
 
             # 注入自定义服务器配置
+            export RENDEZVOUS_SERVER="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RELAY_SERVERS="${{ secrets.CUSTOM_RELAY_SERVERS }}"
+            export RELAY_SERVER="${{ secrets.CUSTOM_RELAY_SERVERS }}"
             export API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
             export KEY="${{ secrets.CUSTOM_KEY }}"
 
@@ -1726,8 +1732,9 @@ jobs:
             git config --global url."https://${{ github.token }}@github.com/".insteadOf "https://github.com/"
 
             # 注入自定义服务器配置
+            export RENDEZVOUS_SERVER="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
             export RENDEZVOUS_SERVERS="${{ secrets.CUSTOM_RENDEZVOUS_SERVERS }}"
-            export RELAY_SERVERS="${{ secrets.CUSTOM_RELAY_SERVERS }}"
+            export RELAY_SERVER="${{ secrets.CUSTOM_RELAY_SERVERS }}"
             export API_SERVER="${{ secrets.CUSTOM_API_SERVER }}"
             export KEY="${{ secrets.CUSTOM_KEY }}"
 
