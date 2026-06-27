@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         job:
-          - { target: x86_64-apple-darwin         , os: macos-12                  }
+          - { target: x86_64-apple-darwin         , os: macos-13                  }
           - { target: x86_64-pc-windows-msvc      , os: windows-2022                  }
           - { target: x86_64-unknown-linux-gnu    , os: ubuntu-24.04                  }
     steps:
@@ -61,16 +61,29 @@ jobs:
             ;;
         esac
 
-    - name: Setup vcpkg with Github Actions binary cache
+    - name: Setup vcpkg with Github Actions binary cache (Linux)
       if: runner.os == 'Linux'
       uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2
       with:
         vcpkgDirectory: /opt/artifacts/vcpkg
         vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
 
-    - name: Install vcpkg dependencies
+    - name: Install vcpkg dependencies (Linux)
       if: runner.os == 'Linux'
       run: $VCPKG_ROOT/vcpkg install --x-install-root="$VCPKG_ROOT/installed"
+      shell: bash
+
+    - name: Setup vcpkg (Windows)
+      if: runner.os == 'Windows'
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: D:\vcpkg
+        vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
+
+    - name: Install vcpkg dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        "$VCPKG_ROOT/vcpkg" install --x-install-root="$VCPKG_ROOT/installed"
       shell: bash
 
     - name: Install Rust toolchain
