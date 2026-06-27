@@ -86,8 +86,8 @@ jobs:
           vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
       - name: Install vcpkg dependencies
         run: |
-          vcpkg install --x-install-root="${env:VCPKG_ROOT}\installed"
-        shell: pwsh
+          "$VCPKG_ROOT/vcpkg" install --x-install-root="$VCPKG_ROOT/installed"
+        shell: bash
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
