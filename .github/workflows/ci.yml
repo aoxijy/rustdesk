@@ -78,9 +78,8 @@ jobs:
           # - { target: i686-pc-windows-msvc        , os: windows-2022                  }
           # - { target: i686-unknown-linux-gnu      , os: ubuntu-20.04, use-cross: true }
           # - { target: i686-unknown-linux-musl     , os: ubuntu-20.04, use-cross: true }
-          # - { target: x86_64-apple-darwin         , os: macos-10.15                   }
-          # - { target: x86_64-pc-windows-gnu       , os: windows-2022                  }
-          # - { target: x86_64-pc-windows-msvc      , os: windows-2022                  }
+          - { target: x86_64-apple-darwin         , os: macos-12                  }
+          - { target: x86_64-pc-windows-msvc      , os: windows-2022                  }
           # - { target: aarch64-pc-windows-msvc     , os: windows-11-arm                }
           - { target: x86_64-unknown-linux-gnu    , os: ubuntu-24.04                  }
           # - { target: x86_64-unknown-linux-musl   , os: ubuntu-20.04, use-cross: true }
@@ -146,12 +145,14 @@ jobs:
         esac
 
     - name: Setup vcpkg with Github Actions binary cache
+      if: runner.os == 'Linux'
       uses: lukka/run-vcpkg@b1a0dd252f06b9e25b3c022a9a03bd7a427fb6a2 # v11
       with:
         vcpkgDirectory: /opt/artifacts/vcpkg
         vcpkgGitCommitId: ${{ env.VCPKG_COMMIT_ID }}
 
     - name: Install vcpkg dependencies
+      if: runner.os == 'Linux'
       run: |
         $VCPKG_ROOT/vcpkg install --x-install-root="$VCPKG_ROOT/installed"
       shell: bash
