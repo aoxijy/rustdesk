@@ -62,8 +62,10 @@ jobs:
         with:
           targets: x86_64-unknown-linux-gnu
       - uses: Swatinem/rust-cache@v2
+      - name: Build sciter resources
+        run: python3 res/inline-sciter.py
       - name: Build
-        run: cargo build --locked --release --target=x86_64-unknown-linux-gnu
+        run: cargo build --locked --release --features inline --target=x86_64-unknown-linux-gnu
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -96,8 +98,10 @@ jobs:
         with:
           targets: x86_64-pc-windows-msvc
       - uses: Swatinem/rust-cache@v2
+      - name: Build sciter resources
+        run: python res/inline-sciter.py
       - name: Build
-        run: cargo build --locked --release --target=x86_64-pc-windows-msvc
+        run: cargo build --locked --release --features inline --target=x86_64-pc-windows-msvc
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -118,8 +122,10 @@ jobs:
         with:
           targets: x86_64-apple-darwin
       - uses: Swatinem/rust-cache@v2
+      - name: Build sciter resources
+        run: python3 res/inline-sciter.py
       - name: Build
-        run: cargo build --locked --release --target=x86_64-apple-darwin
+        run: cargo build --locked --release --features inline --target=x86_64-apple-darwin
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -151,6 +157,8 @@ jobs:
           name: "RustDesk Custom Build ${{ inputs.tag }}"
           body: |
             ## RustDesk 自定义编译版
+
+            > ⚠️ 此版本使用 sciter 内嵌界面。如需 Flutter 桌面客户端，请使用 Actions 中的 **Full Flutter CI** workflow。
 
             **默认服务器配置：**
             - ID/中继服务器: `hhc.gqru.com`
